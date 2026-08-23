@@ -35,7 +35,6 @@ $$
 \delta = -23.45^\circ \cdot \cos\left( \frac{360^\circ}{365} (d + 10) \right)
 $$
 
-*(Where $d$ is the day of the year)*
 
 **Hour Angle ($h$)**
 
@@ -43,7 +42,6 @@ $$
 h = 15^\circ \cdot (t - 12)
 $$
 
-*(Where $t$ is the hour of the day)*
 
 **Solar Zenith Angle ($\theta_z$)**
 
@@ -51,7 +49,6 @@ $$
 \cos(\theta_z) = \sin(\phi)\sin(\delta) + \cos(\phi)\cos(\delta)\cos(h)
 $$
 
-*(Where $\phi$ is the site latitude)*
 
 **Solar Azimuth Angle ($\gamma_s$)**
 
