@@ -27,36 +27,36 @@ The framework supplements standard meteorological features with deterministic ma
 
 ### 1. Deterministic Solar Geometry
 
-To give the model a hard astronomical bound decoupled from cloud cover uncertainty, we compute the Solar Zenith ($\\theta_z$) and Solar Azimuth ($\\gamma_s$) angles.
+To give the model a hard astronomical bound decoupled from cloud cover uncertainty, we compute the Solar Zenith ($\theta_z$) and Solar Azimuth ($\gamma_s$) angles.
 
-**Solar Declination ($\\delta$)**
-$$ \\delta = -23.45^\\circ \\cdot \\cos\\left( \\frac{360^\\circ}{365} (d + 10) \\right) $$
+**Solar Declination ($\delta$)**
+$$ \delta = -23.45^\circ \cdot \cos\left( \frac{360^\circ}{365} (d + 10) \right) $$
 *(Where $d$ is the day of the year)*
 
 **Hour Angle ($h$)**
-$$ h = 15^\\circ \\cdot (t - 12) $$
+$$ h = 15^\circ \cdot (t - 12) $$
 *(Where $t$ is the hour of the day)*
 
-**Solar Zenith Angle ($\\theta_z$)**
-$$ \\cos(\\theta_z) = \\sin(\\phi)\\sin(\\delta) + \\cos(\\phi)\\cos(\\delta)\\cos(h) $$
-*(Where $\\phi$ is the site latitude)*
+**Solar Zenith Angle ($\theta_z$)**
+$$ \cos(\theta_z) = \sin(\phi)\sin(\delta) + \cos(\phi)\cos(\delta)\cos(h) $$
+*(Where $\phi$ is the site latitude)*
 
-**Solar Azimuth Angle ($\\gamma_s$)**
-$$ \\sin(\\gamma_s) = \\frac{-\\cos(\\delta)\\sin(h)}{\\sin(\\theta_z)} $$
+**Solar Azimuth Angle ($\gamma_s$)**
+$$ \sin(\gamma_s) = \frac{-\cos(\delta)\sin(h)}{\sin(\theta_z)} $$
 
 ### 2. Lagged Temperature Coefficient (LTC)
 
 Photovoltaic panel efficiency drops as the temperature rises. Because panels retain heat, current output is a function of *past* temperatures as well as current ones. We model this thermal mass using an Exponentially Weighted Moving Average (EWMA) of the ambient temperature ($T_{amb}$):
 
-$$ LTC_t = \\alpha \\cdot T_{amb, t} + (1 - \\alpha) \\cdot LTC_{t-1} $$
+$$ LTC_t = \alpha \cdot T_{amb, t} + (1 - \alpha) \cdot LTC_{t-1} $$
 
-We employ a strict backward calculation ($\\alpha = 0.15$) to prevent temporal leakage, satisfying rigorous peer-review standards.
+We employ a strict backward calculation ($\alpha = 0.15$) to prevent temporal leakage, satisfying rigorous peer-review standards.
 
 ### 3. Physics-Informed Boundary Constraints
 
 Tree-based models can occasionally predict small positive power outputs during the night due to latent heat or residual feature correlations. We enforce a hard physical boundary constraint:
 
-$$ P_{pred\\_final} = \\begin{cases} 0 & \\text{if } GHI < 0.05 \\text{ kW/m}^2 \\\\ P_{pred} & \\text{otherwise} \\end{cases} $$
+$$ P_{pred\_final} = \begin{cases} 0 & \text{if } GHI < 0.05 \text{ kW/m}^2 \\ P_{pred} & \text{otherwise} \end{cases} $$
 
 This deterministic override guarantees absolute zero error during nocturnal periods, strictly aligning the model's output with the physical reality of solar energy generation.
 
